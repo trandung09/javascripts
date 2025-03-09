@@ -1,14 +1,14 @@
 # DOM là viết tắt của Document Object Model
 được tạo ra bởi trình duyệt web khi tải
  
-+ DOM được tổ chức theo dạng cây (DOM tree), mỗi thàh phần là một Node
++ DOM được tổ chức theo dạng cây (DOM tree), mỗi thành phần là một Node
 
 + Với javascript thông qua DOM ta có thể thao tác để:
 
 . Truy xuất các thuộc thành phần HTML
-. Thay đổi phần tử HTMLAllCollection
+. Thay đổi phần tử HTML
 . Thay đổi style CSS
-. Thay đổi thuộc tính của HTMLAllCollection
+. Thay đổi thuộc tính của HTML
 . Tạo phần tử và thuộc tính mới
 . Tạo sự kiện
 . Phản ứng các sự kiện
@@ -44,19 +44,6 @@
 
 + Sử dụng: document.querySelectorAll 
   => Truy cấp thông qua css selector, trả về danh sách các phần tử
-
-# Quan hệ với các node DOM:
-+  Node.parentNode:  tham chiếu đến nút cha của nút hiện tại
-
-+  Node.childNodes:  tham chiếu đến các nút con trực tiếp của nút hiện tại
-
-+  Node.firstChild:  tham chiếu đến nút con đầu tiên của nút hiện tại
-
-+  Node.lastChild: tham chiếu đến nút con cuối cùng của nút hiện tại
-
-+  Node.nextSibling: tham chiếu đến nút anh em nằm liền kề sau với nút hiện tại.
-
-+  Node.previousSibling: tham chiếu đến nút anh em nằm liền kề trước với nút hiện tại.
 
 # Quan hệ các node trong DOM
 +  Node.parentNode:  tham chiếu đến nút cha của nút hiện tại
