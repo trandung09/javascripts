@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Video</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 400px;
+        margin: 50px auto;
+        text-align: center;
+      }
+      input,
+      button {
+        margin: 10px;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Upload Video</h2>
+
+    <input type="file" id="videoFile" accept="video/*" />
+    <br />
+    <input type="number" id="lessonId" placeholder="Nhập Lesson ID" />
+    <br />
+    <button onclick="uploadVideo()">Upload</button>
+
+    <p id="message"></p>
+
+    <video id="videoPlayer" width="640" height="360" controls>
+      <source id="videoSource" src="" type="video/mp4" />
+      Trình duyệt không hỗ trợ video.
+    </video>
+
+    <button onclick="loadVideo(1)">Xem</button>
+
+    <script>
+      async function uploadVideo() {
+        const fileInput = document.getElementById("videoFile");
+        const lessonId = document.getElementById("lessonId").value;
+        const messageEl = document.getElementById("message");
+
+        if (!lessonId) {
+          messageEl.textContent = "Vui lòng nhập Lesson ID.";
+          return;
+        }
+        if (!fileInput.files.length) {
+          messageEl.textContent = "Vui lòng chọn một video.";
+          return;
+        }
+
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+          const response = await fetch(
+            `http://localhost:8080/api/v1/lessons/${lessonId}`,
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          const result = await response.json();
+
+          if (response.ok) {
+            messageEl.textContent =
+              "Upload thành công! Đường dẫn: " + result.data;
+          } else {
+            messageEl.textContent =
+              "Lỗi: " + (result.message || "Không thể upload video.");
+          }
+        } catch (error) {
+          messageEl.textContent = error.message;
+        }
+      }
+
+      function loadVideo(lessonId) {
+        const videoElement = document.getElementById("videoPlayer");
+        const sourceElement = document.getElementById("videoSource");
+
+        sourceElement.src = `http://localhost:8080/api/v1/videos/stream/1`;
+        videoElement.load(); // Load lại video mới với Streaming API
+      }
+    </script>
+  </body>
+</html>
