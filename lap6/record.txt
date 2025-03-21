@@ -1,0 +1,6 @@
+# Javascript là ngôn ngữ lập trình bất đồng bộ
+
+# Callback fucntion: 
+    + Khái niệm mới trong javascript
+    + Là một hàm sẽ được thực hiện sau khi một hàm khác đã thực hiện xong
+

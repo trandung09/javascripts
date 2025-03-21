@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Form</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="form-container">
+        <h2>Student form</h2>
+        <form id="studentForm">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="birthday">Birthday</label>
+          <input type="date" id="birthday" name="birthday" required />
+
+          <label for="mobile">Mobile phone</label>
+          <input type="tel" id="mobile" name="mobile" required />
+
+          <label for="hometown">Hometown</label>
+          <input type="text" id="hometown" name="hometown" required />
+
+          <div class="buttons">
+            <button id="saveBtn" type="submit" onclick="saveStudent()">
+              Save
+            </button>
+            <button id="resetBtn" type="reset" onclick="resetForm()">
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="table-container">
+        <div class="table-buttons">
+          <button id="deleteBtn" onclick="deleteSelected()">Delete</button>
+          <button id="editBtn" onclick="editSelected()">Edit</button>
+        </div>
+        <table id="studentTable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Birthday</th>
+              <th>Mobile phone</th>
+              <th>Hometown</th>
+            </tr>
+          </thead>
+          <tbody id="studentTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script src="./js/index.js"></script>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Page</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .profile-section {
+        display: none; /* Ẩn cả hai giao diện ban đầu */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <!-- Giao diện cho Learner -->
+      <div id="learner-profile" class="profile-section">
+        <h1 class="text-primary">Giao diện Learner</h1>
+        <p>Chào mừng bạn, Learner!</p>
+        <div class="alert alert-info">
+          Đây là khu vực dành riêng cho Learner.
+        </div>
+      </div>
+
+      <!-- Giao diện cho Instructor -->
+      <div id="instructor-profile" class="profile-section">
+        <h1 class="text-success">Giao diện Instructor</h1>
+        <p>Chào mừng bạn, Instructor!</p>
+        <div class="alert alert-success">
+          Đây là khu vực dành riêng cho Instructor.
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS và JavaScript thuần -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // script.js
+      document.addEventListener("DOMContentLoaded", function () {
+        // Gọi API từ backend để lấy thông tin vai trò
+        fetch("http:/localhost:8080/api/v1/accounts/me")
+          .then((response) => response.json())
+          .then((data) => {
+            const roles = data.roles; // Giả sử backend trả về mảng roles
+            const learnerProfile = document.getElementById("learner-profile");
+            const instructorProfile =
+              document.getElementById("instructor-profile");
+
+            // Kiểm tra xem người dùng có role "instructor" không
+            if (roles.includes("instructor")) {
+              instructorProfile.style.display = "block"; // Hiển thị giao diện instructor
+            } else {
+              learnerProfile.style.display = "block"; // Hiển thị giao diện learner
+            }
+          })
+          .catch((error) => {
+            console.error("Lỗi khi lấy dữ liệu profile:", error);
+          });
+      });
+    </script>
+  </body>
+</html>

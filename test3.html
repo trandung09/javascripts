@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Video to Lesson</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+      }
+      label {
+        display: block;
+        margin: 10px 0 5px;
+      }
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      #response {
+        margin-top: 20px;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Add Video to Lesson</h2>
+    <form id="videoForm">
+      <label for="courseId">Course ID:</label>
+      <input type="number" id="courseId" name="courseId" required />
+
+      <label for="lessonId">Lesson ID:</label>
+      <input type="number" id="lessonId" name="lessonId" required />
+
+      <label for="title">Video Title:</label>
+      <input type="text" id="title" name="title" required />
+
+      <label for="time">Video Duration (seconds):</label>
+      <input type="number" id="time" name="time" min="1" value="1" required />
+
+      <label for="isPreview">Is Preview?</label>
+      <select id="isPreview" name="isPreview">
+        <option value="false">No</option>
+        <option value="true">Yes</option>
+      </select>
+
+      <label for="videoFile">Video File (optional):</label>
+      <input type="file" id="videoFile" name="videoFile" accept="video/*" />
+
+      <label for="videoUrl">Video URL (if no file):</label>
+      <input
+        type="text"
+        id="videoUrl"
+        name="videoUrl"
+        placeholder="e.g., https://example.com/video.mp4"
+      />
+
+      <button type="submit">Add Video</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+      document
+        .getElementById("videoForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          // Lấy dữ liệu từ form
+          const courseId = document.getElementById("courseId").value;
+          const lessonId = document.getElementById("lessonId").value;
+          const title = document.getElementById("title").value;
+          const time = parseInt(document.getElementById("time").value);
+          const isPreview =
+            document.getElementById("isPreview").value === "true";
+          const videoFile = document.getElementById("videoFile").files[0];
+          const videoUrl = document.getElementById("videoUrl").value;
+
+          // Tạo đối tượng VideoRequest
+          const videoData = {
+            title: title,
+            time: time,
+            videoUrl: videoUrl || "", // Nếu có file, backend sẽ ghi đè
+            isPreview: isPreview,
+          };
+
+          // Chuyển thành chuỗi JSON
+          const videoDataJson = JSON.stringify(videoData);
+
+          // Tạo FormData
+          const formData = new FormData();
+          formData.append("videoDataJson", videoDataJson);
+          if (videoFile) {
+            formData.append("videoFile", videoFile);
+          }
+
+          try {
+            // Gửi request tới API
+            const url = `http://localhost:8080/api/v1/instructors/courses/${courseId}/lessons/${lessonId}/videos`;
+            const response = await fetch(url, {
+              method: "POST",
+              body: formData,
+            });
+
+            // Kiểm tra phản hồi
+            if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error(`Error ${response.status}: ${errorText}`);
+            }
+
+            const result = await response.json();
+            document.getElementById("response").innerHTML = `
+                    <p style="color: green;">Video added successfully!</p>
+                    <pre>${JSON.stringify(result.data, null, 2)}</pre>
+                `;
+          } catch (error) {
+            document.getElementById("response").innerHTML = `
+                    <p style="color: red;">Failed to add video: ${error.message}</p>
+                `;
+          }
+        });
+    </script>
+  </body>
+</html>
